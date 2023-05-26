@@ -13,6 +13,14 @@ class BooksController < ApplicationController
     end
   end
 
+  def destroy
+    # The bang (!) after destroy returns true if the book is found and destroyed
+    # Otherwise if it fails it will return an exception which we can handle
+    Book.find(params[:id]).destroy!
+
+    head :no_content # returns 204 response in the head of the request, no request body
+  end
+
   # we can use the default rails params (params[:something]) OR the gem 'rails-param'
   # that gem allows us to typecheck and add messages for when params are wrong/missing
   private
