@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   # get "/books", to: "books#index"
 
-  resources :books, only: [:index, :create, :destroy]
+  namespace :api do
+    namespace :v1 do
+      resources :books, only: [:index, :create, :destroy]
+    end
+  end
 end

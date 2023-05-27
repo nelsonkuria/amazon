@@ -1,4 +1,4 @@
-class BooksController < ApplicationController
+class Api::V1::BooksController < ApplicationController
   # These will handle exceptions for all actions in this controller
   # rescue_from ActiveRecord::RecordNotFound, with: :not_found
   # rescue_from ActiveRecord::RecordNotDestroyed, with: :not_destroyed
