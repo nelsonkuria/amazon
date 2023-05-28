@@ -11,11 +11,11 @@ describe 'Books API', type: :request do
       get '/api/v1/books'
 
       expect(response).to have_http_status(:success)
-      # for us to be able to make this👇 assertion on the number of books in the
+      expect(JSON.parse(response.body).size).to eq(2)
+      # for us to be able to make this☝🏼 assertion on the number of books in the
       # response body, we need to actually create book records. rspec does't use
       # our default db, it creates a test db that needs to get seeded each time
       # therefore we install the gem `factory_bot_rails` to allow us to do this
-      expect(JSON.parse(response.body).size).to eq(2)
     end
   end
 
