@@ -4,7 +4,9 @@ class Api::V1::BooksController < ApplicationController
   # rescue_from ActiveRecord::RecordNotDestroyed, with: :not_destroyed
 
   def index
-    render json: Book.all
+    books = Book.all
+
+    render json: BooksRepresenter.new(books).as_json
   end
 
   def create
