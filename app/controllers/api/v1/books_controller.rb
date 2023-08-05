@@ -3,8 +3,11 @@ class Api::V1::BooksController < ApplicationController
   # rescue_from ActiveRecord::RecordNotFound, with: :not_found
   # rescue_from ActiveRecord::RecordNotDestroyed, with: :not_destroyed
 
+  # Named constant
+  MAX_PAGINATION_LIMIT = 100
+
   def index
-    books = Book.all
+    books = Book.limit(limit).offset(params[:offset])
 
     render json: BooksRepresenter.new(books).as_json
   end
@@ -41,6 +44,13 @@ class Api::V1::BooksController < ApplicationController
   # we can use the default rails params (params[:something]) OR the gem 'rails-param'
   # that gem allows us to typecheck and add messages for when params are wrong/missing
   private
+
+  def limit
+    [
+      params.fetch(:limit, MAX_PAGINATION_LIMIT).to_i,
+      MAX_PAGINATION_LIMIT
+    ].min
+  end
 
   def author_params
     params.require(:author).permit(:first_name, :last_name, :age)
