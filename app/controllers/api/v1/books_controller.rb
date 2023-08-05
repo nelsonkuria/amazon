@@ -16,6 +16,19 @@ class Api::V1::BooksController < ApplicationController
     author = Author.create!(author_params)
     book = Book.new(book_params.merge(author_id: author.id))
 
+    # let's say, whenever we create a book, we have to call some external api to do sth.
+    # Waiting for the external api to respond will always take time. This is going to
+    # affect our api performance and ultimately could cause requests to back up and start
+    # to fail e.g. timeouts. Imagine we have a lot of requests to our server. Our server
+    # would be in trouble. Instead, we want to return a response quickly to the api
+    # caller so that it knows the request has been successfully processed. Then we can
+    # perform the complex operation asynchronously.
+
+    # This queues the active job and proceeds with code execution, no waiting
+    UpdateSkuJob.perform_later(book_params[:title])
+
+    # raise 'exit'
+
     if book.save
       render json: BookRepresenter.new(book).as_json, status: :created
     else
