@@ -41,7 +41,7 @@ class Api::V1::BooksController < ApplicationController
     # Otherwise if it fails it will return an exception which we can handle
     # If it fails to get the book, raises a RecordNotFound exception
     # If it fails to destroy the book raises a RecordNotDestroyed exception
-    # -> Adding rescue blocks to controllers has some disadvantages e.g. can't resue them
+    # -> Adding rescue blocks to controller actions has some disadvantages - it bloats our controller action logic and we can't reuse them
     # -> A better way to handle these is to use 'rescue_from' at the top of the controller
     Book.find(params[:id]).destroy!
 
